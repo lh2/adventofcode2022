@@ -10,3 +10,9 @@ C Z
    (= 15
       (run-task 2 1
                 (make-string-input-stream +testdata-day02+)))))
+
+(def-test day02-task2 ()
+  (is-true
+   (= 12
+      (run-task 2 2
+                (make-string-input-stream +testdata-day02+)))))
