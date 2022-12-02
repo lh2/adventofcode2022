@@ -5,8 +5,10 @@
   :licence "AGPLv3"
   :serial t
   :pathname "src"
+  :depends-on ("trivia")
   :components ((:file "main")
-               (:file "day01")))
+               (:file "day01")
+               (:file "day02")))
 
 (defsystem "adventofcode2022/test"
   :description "My solutions to the advent of code 2022"
@@ -17,4 +19,5 @@
   :pathname "t"
   :depends-on ("adventofcode2022" "fiveam")
   :components ((:file "package")
-               (:file "day01")))
+               (:file "day01")
+               (:file "day02")))
