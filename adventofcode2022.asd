@@ -8,7 +8,8 @@
   :depends-on ("trivia")
   :components ((:file "main")
                (:file "day01")
-               (:file "day02")))
+               (:file "day02")
+               (:file "day03")))
 
 (defsystem "adventofcode2022/test"
   :description "My solutions to the advent of code 2022"
@@ -20,4 +21,5 @@
   :depends-on ("adventofcode2022" "fiveam")
   :components ((:file "package")
                (:file "day01")
-               (:file "day02")))
+               (:file "day02")
+               (:file "day03")))
