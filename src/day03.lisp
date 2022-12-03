@@ -24,19 +24,19 @@
                             (calculate-priority (if use-item2 item2 item1))))))
 
 (defun task2 (inputs)
-  (loop with length = (length inputs)
-        for start from 0
-        for end = (+ start 3)
+  (loop with head = inputs
+        with length = (length inputs)
+        for end from 3
         while (<= end length)
         when (= 0 (mod end 3))
           sum (loop for item = #\A then (cond ((char= item #\Z) #\a)
                                               ((char= item #\z) nil)
                                               (t (code-char (1+ (char-code item)))))
                     while item
-                    while (remove-if (lambda (elf)
-                                       (find item elf))
-                                     (subseq inputs start end))
-                    finally (return (calculate-priority item)))))
+                    until (loop for i from 0 to 2
+                                always (find item (elt head i)))
+                    finally (return (calculate-priority item)))
+          and do (setf head (cdddr head))))
 
 (define-day 3
     ()
