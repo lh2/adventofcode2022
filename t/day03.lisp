@@ -13,3 +13,8 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
       (run-task 3 1
                 (make-string-input-stream +testdata-day03+)))))
 
+(def-test day03-task2 ()
+  (is-true
+   (= 70
+      (run-task 3 2
+                (make-string-input-stream +testdata-day03+)))))
