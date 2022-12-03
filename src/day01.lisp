@@ -11,7 +11,7 @@
             (when (> current max)
               (setf max current))
             (setf current 0))
-          (setf current (+ current input))))
+          (incf current input)))
     (when (> current max)
       (setf max current))
     max))
@@ -24,7 +24,7 @@
           (progn
             (push current elves)
             (setf current 0))
-          (setf current (+ current input))))
+          (incf current input)))
     (push current elves)
     (setf elves (sort elves #'>))
     (apply #'+ (subseq elves 0 3))))
