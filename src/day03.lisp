@@ -9,46 +9,34 @@
 
 (defun task1 (inputs)
   (loop for input in inputs
-        sum (let* ((compartment-size (/ (length input) 2))
-                   (compartment1 (subseq input 0 compartment-size))
-                   (compartment2 (subseq input compartment-size))
-                   (result))
-              (loop for item1 across compartment1
-                    for item2 across compartment2
-                    when (find item1 compartment2)
-                      do (progn
-                           (setf result item1)
-                           (loop-finish))
-                    when (find item2 compartment1)
-                      do (progn
-                           (setf result item2)
-                           (loop-finish)))
-              (calculate-priority result))))
-
-(defun all-chars-from-to (from to)
-  (loop for i from (char-code from) to (char-code to)
-        collect (code-char i)))
+        sum (loop with compartment-size = (/ (length input) 2)
+                  with compartment1 = (subseq input 0 compartment-size)
+                  with compartment2 = (subseq input compartment-size)
+                  with use-item2 = nil
+                  for item1 across compartment1
+                  for item2 across compartment2
+                  until (or
+                         (find item1 compartment2)
+                         (and
+                          (find item2 compartment1)
+                          (setf use-item2 t)))
+                  finally (return
+                            (calculate-priority (if use-item2 item2 item1))))))
 
 (defun task2 (inputs)
-  (let* ((items (concatenate 'list
-                             (all-chars-from-to #\A #\Z)
-                             (all-chars-from-to #\a #\z)))
-         (group)
-         (groups (loop for i from 1
-                       for elf in inputs
-                       do (push elf group)
-                       when (= (mod i 3) 0)
-                         collect group and do (setf group nil))))
-    (loop for group in groups
-          sum (let ((result))
-                (loop for item in items
-                      when (= 0 (length (remove-if (lambda (elf)
-                                                     (find item elf))
-                                                   group)))
-                        do (progn
-                             (setf result item)
-                             (loop-finish)))
-                (calculate-priority result)))))
+  (loop with length = (length inputs)
+        for start from 0
+        for end = (+ start 3)
+        while (<= end length)
+        when (= 0 (mod end 3))
+          sum (loop for item = #\A then (cond ((char= item #\Z) #\a)
+                                              ((char= item #\z) nil)
+                                              (t (code-char (1+ (char-code item)))))
+                    while item
+                    while (remove-if (lambda (elf)
+                                       (find item elf))
+                                     (subseq inputs start end))
+                    finally (return (calculate-priority item)))))
 
 (define-day 3
     ()
