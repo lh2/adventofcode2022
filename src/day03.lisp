@@ -25,9 +25,7 @@
 
 (defun task2 (inputs)
   (loop with head = inputs
-        with length = (length inputs)
         for end from 3
-        while (<= end length)
         when (= 0 (mod end 3))
           sum (loop for item = #\A then (cond ((char= item #\Z) #\a)
                                               ((char= item #\z) nil)
@@ -36,7 +34,8 @@
                     until (loop for i from 0 to 2
                                 always (find item (elt head i)))
                     finally (return (calculate-priority item)))
-          and do (setf head (cdddr head))))
+          and do (setf head (cdddr head))
+        while head))
 
 (define-day 3
     ()
