@@ -29,3 +29,9 @@ $ ls
    (= 95437
       (run-task 7 1
                 (make-string-input-stream +testdata-day07+)))))
+
+(def-test day07-task2 ()
+  (is-true
+   (= 24933642
+      (run-task 7 2
+                (make-string-input-stream +testdata-day07+)))))
