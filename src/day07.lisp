@@ -89,7 +89,7 @@
         with free-space = (- 70000000 (size tree))
         with needed-space = (- 30000000 free-space)
         for dir in (get-all-directories tree)
-        when (> (size dir) needed-space)
+        when (>= (size dir) needed-space)
           minimize (size dir)))
 
 (define-day 7
