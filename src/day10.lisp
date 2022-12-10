@@ -2,7 +2,10 @@
   (:use #:cl #:adventofcode2022))
 (in-package #:adventofcode2022/day10)
 
-(defun task1 (inputs)
+(defun sprite-covers-pixel-p (pixel sprite-pos)
+  (<= (abs (- sprite-pos pixel)) 1))
+
+(defun run-cpu (inputs &key (video-stream t))
   (loop with x = 1
         with i = 1
         for (op value) in inputs
@@ -18,10 +21,23 @@
                            (= j 140)
                            (= j 180)
                            (= j 220))
-                    sum (* j x))
+                    sum (* j x)
+                  do (format video-stream "~A"
+                             (if (sprite-covers-pixel-p (mod (1- j) 40) x)
+                                 #\#
+                                 #\.))
+                  when (= 0 (mod j 40))
+                    do (format video-stream "~%"))
         do (setf i ni)
         when (string= op "addx")
           do (incf x value)))
+
+(defun task1 (inputs)
+  (run-cpu inputs))
+
+(defun task2 (inputs)
+  (with-output-to-string (s)
+    (run-cpu inputs :video-stream s)))
 
 (define-day 10
     (:translate-input (lambda (line)
@@ -30,4 +46,4 @@
                             (setf (cadr parts) (parse-integer (cadr parts))))
                           parts)))
   #'task1
-  nil)
+  #'task2)
