@@ -5,7 +5,7 @@
 (defun sprite-covers-pixel-p (pixel sprite-pos)
   (<= (abs (- sprite-pos pixel)) 1))
 
-(defun run-cpu (inputs &key (video-stream t))
+(defun run-cpu (inputs &optional video-stream)
   (loop with x = 1
         with i = 1
         for (op value) in inputs
@@ -37,7 +37,7 @@
 
 (defun task2 (inputs)
   (with-output-to-string (s)
-    (run-cpu inputs :video-stream s)))
+    (run-cpu inputs s)))
 
 (define-day 10
     (:translate-input (lambda (line)
