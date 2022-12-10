@@ -15,7 +15,8 @@
                (:file "day06")
                (:file "day07")
                (:file "day08")
-               (:file "day09")))
+               (:file "day09")
+               (:file "day10")))
 
 (defsystem "adventofcode2022/test"
   :description "My solutions to the advent of code 2022"
@@ -34,4 +35,5 @@
                (:file "day06")
                (:file "day07")
                (:file "day08")
-               (:file "day09")))
+               (:file "day09")
+               (:file "day10")))
