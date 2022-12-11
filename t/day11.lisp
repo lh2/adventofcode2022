@@ -33,3 +33,9 @@ Monkey 3:
    (= 10605
       (run-task 11 1
                 (make-string-input-stream +testdata-day11+)))))
+
+(def-test day11-task2 ()
+  (is-true
+   (= 2713310158
+      (run-task 11 2
+                (make-string-input-stream +testdata-day11+)))))
