@@ -22,7 +22,7 @@
               (push current-monkey monkeys))
              ((str:starts-with-p "  Starting items:" input)
               (setf (items current-monkey)
-                    (mapcar (lambda (x) (parse-integer x))
+                    (mapcar #'parse-integer
                             (str:split ", " (subseq input 18)))))
              ((str:starts-with-p "  Operation:" input)
               (setf (operation-fun current-monkey)
