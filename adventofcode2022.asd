@@ -5,7 +5,7 @@
   :licence "AGPLv3"
   :serial t
   :pathname "src"
-  :depends-on ("trivia" "str")
+  :depends-on ("trivia" "str" "queues" "queues.simple-queue")
   :components ((:file "main")
                (:file "day01")
                (:file "day02")
@@ -17,7 +17,8 @@
                (:file "day08")
                (:file "day09")
                (:file "day10")
-               (:file "day11")))
+               (:file "day11")
+               (:file "day12")))
 
 (defsystem "adventofcode2022/test"
   :description "My solutions to the advent of code 2022"
@@ -38,4 +39,5 @@
                (:file "day08")
                (:file "day09")
                (:file "day10")
-               (:file "day11")))
+               (:file "day11")
+               (:file "day12")))
