@@ -41,6 +41,16 @@
         when (compare-lists a b)
           sum i))
 
+(defun task2 (inputs)
+  (let ((divider-packets (list #(#(2)) #(#(6)))))
+    (apply #'*
+           (loop for packet in (-> (remove-if #'null inputs)
+                                 (append (copy-seq divider-packets))
+                                 (sort (lambda (a b) (compare-lists a b))))
+                 for i from 1
+                 when (find packet divider-packets :test 'eq)
+                   collect i))))
+
 (define-day 13
     (:translate-input (lambda (line)
                         (if (= (length line) 0)
@@ -51,4 +61,4 @@
                               (str:replace-all "," " ")
                               (read-from-string)))))
   #'task1
-  nil)
+  #'task2)
