@@ -45,7 +45,7 @@
     (apply #'*
            (loop for packet in (-> (remove-if #'null inputs)
                                  (append (copy-seq divider-packets))
-                                 (sort (lambda (a b) (compare-lists a b))))
+                                 (sort #'compare-lists))
                  for i from 1
                  when (find packet divider-packets :test 'eq)
                    collect i))))
