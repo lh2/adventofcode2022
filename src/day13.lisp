@@ -25,10 +25,8 @@
              for res = (compare-lists va vb)
              when (not (eq res :continue))
                return res
-             end
              when (and (null va) (null vb))
                return :continue
-             end
              finally (return t)))))
 
 (defun task1 (inputs)
