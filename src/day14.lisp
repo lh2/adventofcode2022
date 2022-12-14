@@ -29,7 +29,20 @@
                  do (setf last point))
         finally (return (values map (list min-x 0) (list max-x max-y)))))
 
-(defun print-map (map min-point max-point)
+(defun print-map (map min-point max-point &optional recompute-bounds?)
+  (when recompute-bounds?
+    (loop with min-x = nil
+          with max-x = nil
+          with max-y = nil
+          for point being the hash-key of map
+          when (or (null min-x) (< (car point) min-x))
+            do (setf min-x (car point))
+          when (or (null max-x) (> (car point) max-x))
+            do (setf max-x (car point))
+          when (or (null max-y) (> (cadr point) max-y))
+            do (setf max-y (cadr point))
+          finally (setf min-point (list min-x 0))
+                  (setf max-point (list max-x max-y))))
   (loop for y from (cadr min-point) to (cadr max-point)
         do (loop for x from (car min-point) to (car max-point)
                  for cell = (gethash (list x y) map)
@@ -66,6 +79,32 @@
           )
     (count-sand map)))
 
+(defun task2 (inputs)
+  (multiple-value-bind (map min-point max-point)
+      (make-map inputs)
+    (declare (ignore min-point))
+    (loop with x = 500
+          with y = 0
+          with floor-y = (+ (cadr max-point) 2)
+          while t
+          for point = (list x y)
+          for down = (list x (1+ y))
+          for down-left = (list (1- x) (1+ y))
+          for down-right = (list (1+ x) (1+ y))
+          if (loop for next in (list down down-left down-right)
+                   when (and (< (cadr next) floor-y)
+                             (null (gethash next map)))
+                     do (setf x (car next))
+                     and do (setf y (cadr next))
+                     and do (return nil)
+                   finally (return t))
+            do (setf x 500)
+            and do (setf y 0)
+            and do (setf (gethash point map) #\o)
+                   ;; and do (print-map map min-point max-point t)
+            and when (equal (list x y) point) do (return))
+    (count-sand map)))
+
 (define-day 14
     (:translate-input (lambda (line)
                         (mapcar (lambda (x)
@@ -73,4 +112,4 @@
                                           (uiop:split-string x :separator '(#\,))))
                                 (str:split " -> " line))))
   #'task1
-  nil)
+  #'task2)
