@@ -3,7 +3,6 @@
 (in-package #:adventofcode2022/day13)
 
 (defun compare-lists (a b)
-  (declare (optimize (debug 3)))
   (cond
     ((and (null a) (null b))
      :continue)
