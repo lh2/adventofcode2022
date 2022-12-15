@@ -1,6 +1,6 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day11+ "Monkey 0:
+(define-constant +testdata-day11+ "Monkey 0:
   Starting items: 79, 98
   Operation: new = old * 19
   Test: divisible by 23
@@ -26,7 +26,8 @@ Monkey 3:
   Operation: new = old + 3
   Test: divisible by 17
     If true: throw to monkey 0
-    If false: throw to monkey 1")
+    If false: throw to monkey 1"
+  :test 'equal)
 
 (def-test day11-task1 ()
   (is-true

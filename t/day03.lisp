@@ -1,11 +1,12 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day03+ "vJrwpWtwJgWrhcsFMMfFFhFp
+(define-constant +testdata-day03+ "vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
 PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw")
+CrZsJsPPZsGzwwsLwLmpwMDw"
+  :test 'equal)
 
 (def-test day03-task1 ()
   (is-true

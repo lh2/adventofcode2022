@@ -1,10 +1,11 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day08+ "30373
+(define-constant +testdata-day08+ "30373
 25512
 65332
 33549
-35390")
+35390"
+  :test 'equal)
 
 (def-test day08-task1 ()
   (is-true

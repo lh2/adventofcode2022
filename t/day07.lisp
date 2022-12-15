@@ -1,6 +1,6 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day07+ "$ cd /
+(define-constant +testdata-day07+ "$ cd /
 $ ls
 dir a
 14848514 b.txt
@@ -22,7 +22,8 @@ $ ls
 4060174 j
 8033020 d.log
 5626152 d.ext
-7214296 k")
+7214296 k"
+  :test 'equal)
 
 (def-test day07-task1 ()
   (is-true

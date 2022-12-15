@@ -1,10 +1,11 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day12+ "Sabqponm
+(define-constant +testdata-day12+ "Sabqponm
 abcryxxl
 accszExk
 acctuvwj
-abdefghi")
+abdefghi"
+  :test 'equal)
 
 (def-test day12-task1 ()
   (is-true

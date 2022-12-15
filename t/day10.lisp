@@ -1,6 +1,6 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day10+ "addx 15
+(define-constant +testdata-day10+ "addx 15
 addx -11
 addx 6
 addx -3
@@ -145,7 +145,7 @@ addx -6
 addx -11
 noop
 noop
-noop")
+noop" :test 'equal)
 
 (def-test day10-task1 ()
   (is-true

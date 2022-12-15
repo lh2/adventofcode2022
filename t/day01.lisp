@@ -1,6 +1,6 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day01+ "1000
+(define-constant +testdata-day01+ "1000
 2000
 3000
 
@@ -13,7 +13,8 @@
 8000
 9000
 
-10000")
+10000"
+  :test 'equal)
 
 (def-test day01-task1 ()
   (is-true

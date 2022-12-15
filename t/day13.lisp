@@ -1,6 +1,6 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day13+ "[1,1,3,1,1]
+(define-constant +testdata-day13+ "[1,1,3,1,1]
 [1,1,5,1,1]
 
 [[1],[2,3,4]]
@@ -22,7 +22,8 @@
 [[]]
 
 [1,[2,[3,[4,[5,6,7]]]],8,9]
-[1,[2,[3,[4,[5,6,0]]]],8,9]")
+[1,[2,[3,[4,[5,6,0]]]],8,9]"
+  :test 'equal)
 
 (def-test day13-compare-lists ()
   (is-true (adventofcode2022/day13::compare-lists

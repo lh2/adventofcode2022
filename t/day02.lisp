@@ -1,9 +1,10 @@
 (in-package #:adventofcode2022/test)
 
-(defconstant +testdata-day02+ "A Y
+(define-constant +testdata-day02+ "A Y
 B X
 C Z
-")
+"
+  :test 'equal)
 
 (def-test day02-task1 ()
   (is-true
