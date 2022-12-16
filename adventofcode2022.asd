@@ -9,7 +9,8 @@
                "str"
                "queues"
                "queues.simple-queue"
-               "binding-arrows")
+               "binding-arrows"
+               "cl-ppcre")
   :components ((:file "main")
                (:file "day01")
                (:file "day02")
@@ -25,7 +26,8 @@
                (:file "day12")
                (:file "day13")
                (:file "day14")
-               (:file "day15")))
+               (:file "day15")
+               (:file "day16")))
 
 (defsystem "adventofcode2022/test"
   :description "My solutions to the advent of code 2022"
@@ -50,4 +52,5 @@
                (:file "day12")
                (:file "day13")
                (:file "day14")
-               (:file "day15")))
+               (:file "day15")
+               (:file "day16")))
