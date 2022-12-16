@@ -37,3 +37,9 @@ Valve JJ has flow rate=21; tunnel leads to valve II"
    (= 1651
       (run-task 16 1
                 (make-string-input-stream +testdata-day16+)))))
+
+(def-test day16-task2 ()
+  (is-true
+   (= 1707
+      (run-task 16 2
+                (make-string-input-stream +testdata-day16+)))))
