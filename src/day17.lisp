@@ -81,14 +81,24 @@
                       do (format t "-")
                       finally (format t "+~%"))))
 
-(defun task1 (input)
+(defun find-pattern (list)
+  (loop for start from 0
+        thereis (loop for length from 500 to (floor (/ (- (length list) start) 2))
+                      when (loop for i below length
+                                 for c-1 = (elt list (+ start i))
+                                 for c-2 = (elt list (+ start i length))
+                                 always (= c-1 c-2))
+                        do (return-from find-pattern (values start length)))))
+
+(defun play-tetris (dirs n-rocks)
   (loop with cave = (make-instance 'cave :width 7)
-        with dirs = (car input)
         with round = 0
-        for i below 2022
+        with history = nil
+        for i below n-rocks
         for rock = (aref *rocks* (mod i (length *rocks*)))
         do (loop with rock-x = 2
                  with rock-y = (+ (tip-y cave) 3 (height rock))
+                 with old-tip = (tip-y cave)
                  for dir = (aref dirs (mod round (length dirs)))
                  do (incf round)
                  do (cond
@@ -104,13 +114,37 @@
                          (incf rock-x))))
                  if (rock-collides-p cave rock rock-x (1- rock-y))
                    do (put-rock cave rock rock-x rock-y)
+                   and do (push (- (tip-y cave) old-tip) history)
                    and return nil
                  else
                    do (decf rock-y))
            ;;do (print-cave cave)
-        finally (return (1+ (tip-y cave)))))
+        finally (return-from play-tetris
+                  (values (1+ (tip-y cave))
+                          (coerce (reverse history)
+                                  'vector)))))
+
+(defun task1 (input)
+  (play-tetris (car input) 2022))
+
+(defun task2 (input)
+  (let ((simulate-n-rounds 10000)
+        (simulation-target-rounds 1000000000000))
+    (multiple-value-bind (height history)
+        (play-tetris (car input) simulate-n-rounds)
+      (declare (ignore height))
+      (multiple-value-bind (start length)
+          (find-pattern history)
+        (let* ((initial (reduce #'+ (subseq history 0 start)))
+               (cycle (subseq history start (+ start length)))
+               (diff-per-cycle (reduce #'+ cycle)))
+          (multiple-value-bind (n-cycles n-rest)
+              (floor (- simulation-target-rounds start) length)
+            (+ initial
+               (* n-cycles diff-per-cycle)
+               (reduce #'+ (subseq cycle 0 n-rest)))))))))
 
 (define-day 17
     ()
   #'task1
-  nil)
+  #'task2)
