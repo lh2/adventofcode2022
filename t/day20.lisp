@@ -14,3 +14,9 @@
    (= 3
       (run-task 20 1
                 (make-string-input-stream +testdata-day20+)))))
+
+(def-test day20-task2 ()
+  (is-true
+   (= 1623178306
+      (run-task 20 2
+                (make-string-input-stream +testdata-day20+)))))

@@ -20,21 +20,36 @@
                 (replace sequence before :start1 (1+ new-index)))))
         do (setf (aref sequence new-index) item-to-mix)))
 
+(defun convert-sequence (inputs &key map-number)
+  (coerce (loop for number in inputs
+                for i from 0
+                collect (list (if map-number
+                                  (funcall map-number number)
+                                  number)
+                              i))
+          'vector))
+
+(defun find-coordinates (sequence)
+  (let ((length (length sequence))
+        (zero (position-if (lambda (item)
+                             (zerop (car item)))
+                           sequence)))
+    (+ (car (aref sequence (mod (+ zero 1000) length)))
+       (car (aref sequence (mod (+ zero 2000) length)))
+       (car (aref sequence (mod (+ zero 3000) length))))))
+
 (defun task1 (inputs)
-  (let ((sequence (coerce (loop for number in inputs
-                                for i from 0
-                                collect (list number i))
-                          'vector))
-        (length (length inputs)))
+  (let ((sequence (convert-sequence inputs)))
     (mix sequence)
-    (let ((zero (position-if (lambda (item)
-                               (zerop (car item)))
-                             sequence)))
-      (+ (car (aref sequence (mod (+ zero 1000) length)))
-         (car (aref sequence (mod (+ zero 2000) length)))
-         (car (aref sequence (mod (+ zero 3000) length)))))))
+    (find-coordinates sequence)))
+
+(defun task2 (inputs)
+  (let ((sequence (convert-sequence inputs :map-number (lambda (number)
+                                                         (* number 811589153)))))
+    (loop repeat 10 do (mix sequence))
+    (find-coordinates sequence)))
 
 (define-day 20
     (:translate-input #'parse-integer)
   #'task1
-  nil)
+  #'task2)
