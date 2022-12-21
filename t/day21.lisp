@@ -22,3 +22,9 @@ hmdt: 32"
    (= 152
       (run-task 21 1
                 (make-string-input-stream +testdata-day21+)))))
+
+(def-test day21-task2 ()
+  (is-true
+   (= 301
+      (run-task 21 2
+                (make-string-input-stream +testdata-day21+)))))
