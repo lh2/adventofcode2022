@@ -58,7 +58,8 @@
                  when type
                    do (setf (gethash (list x y) map) type))))
 
-(defun wrap-around (map pos last-pos)
+(defun wrap-around (map pos last-pos dir)
+  (declare (ignore dir))
   (let ((x (car pos))
         (y (cadr pos)))
     (if (= y (cadr last-pos))
@@ -85,28 +86,74 @@
                    while tile
                    maximize i))))))
 
+(defparameter *wrap-map* (make-hash-table :test 'equal))
+
+(loop for i below 50
+      do (flet ((m (x y dir nx ny ndir)
+                  (setf (gethash (list x y dir) *wrap-map*) (list nx ny ndir))))
+           (m 50 i 2 0 (- 149 i) 0)
+           (m (+ 50 i) 0 3 0 (+ 150 i) 0)
+
+           (m (+ 100 i) 0 3 i 199 3)
+           (m 149 i 0 99 (- 149 i) 2)
+           (m (+ 100 i) 49 1 99 (+ 50 i) 2)
+
+           (m 50 (+ 50 i) 2 i 100 1)
+           (m 99 (+ 50 i) 0 (+ 100 i) 49 3)
+
+           (m 99 (+ 100 i) 0 149 (- 49 i) 2)
+           (m (+ 50 i) 149 1 49 (+ 150 i) 2)
+
+           (m 0 (+ 100 i) 2 50 (- 49 i) 0)
+           (m i 100 3 50 (+ 50 i) 0)
+
+           (m 0 (+ 150 i) 2 (+ 50 i) 0 1)
+           (m 49 (+ 150 i) 0 (+ 50 i) 149 3)
+           (m i 199 1 (+ 100 i) 0 1)))
+
+(defun wrap-cube (map pos last-pos dir)
+  (declare (ignore map pos))
+  (or (gethash (append last-pos (list dir))
+               *wrap-map*)
+      (error "Wrap result is null!")))
+
+(defun walk-map (map directions start-pos wrap-function)
+  (loop with facing = 0
+        with current-pos = start-pos
+        for direction in directions
+        if (numberp direction)
+          do (loop repeat direction
+                   for next-coord = (walk current-pos facing)
+                   for next-facing = facing
+                   for next-tile = (gethash next-coord map)
+                   when (null next-tile)
+                     do (let ((wrap (funcall wrap-function map next-coord current-pos facing)))
+                          (setf next-coord (subseq wrap 0 2))
+                          (when (> (length wrap) 2)
+                            (setf next-facing (caddr wrap))))
+                     and do (setf next-tile (gethash next-coord map))
+                   never (eq next-tile :wall)
+                   do (setf current-pos next-coord
+                            facing next-facing))
+        else
+          do (setf facing (turn facing direction))
+        finally (return (progn
+                          (list (* 4 (1+ (car current-pos))) (* 1000 (1+ (cadr current-pos))) facing)
+                          (+ (* 1000 (1+ (cadr current-pos)))
+                             (* 4 (1+ (car current-pos)))
+                             facing)))))
+
 (defun task1 (inputs)
   (multiple-value-bind (map directions start-pos)
       (parse-input inputs)
-    (loop with facing = 0
-          with current-pos = start-pos
-          for direction in directions
-          if (numberp direction)
-            do (loop repeat direction
-                     for next-coord = (walk current-pos facing)
-                     for next-tile = (gethash next-coord map)
-                     when (null next-tile)
-                       do (setf next-coord (wrap-around map next-coord current-pos))
-                       and do (setf next-tile (gethash next-coord map))
-                     never (eq next-tile :wall)
-                     do (setf current-pos next-coord))
-          else
-            do (setf facing (turn facing direction))
-          finally (return (+ (* 1000 (1+ (cadr current-pos)))
-                             (* 4 (1+ (car current-pos)))
-                             facing)))))
+    (walk-map map directions start-pos #'wrap-around)))
+
+(defun task2 (inputs)
+  (multiple-value-bind (map directions start-pos)
+      (parse-input inputs)
+    (walk-map map directions start-pos #'wrap-cube)))
 
 (define-day 22
     ()
   #'task1
-  nil)
+  #'task2)
